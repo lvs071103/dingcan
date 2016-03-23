@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>乐蜀点餐统计</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="http://pythonic.in/static/dingcan/index.css"/>
+	<body>
+		<div class="contentAll">
+			<h1>乐蜀点餐统计:</h1>
+			<div class="diancTitle">
+                {% for item in dingcanpost %}
+                    <h3>{{ item.title }}</h3>
+                    <p>上：<a href="{{ item.url1 }}" target="_blank">{{ item.url1 }}</a></p>
+                    <p>下：<a href="{{ item.url2 }}" target="_blank">{{ item.url2 }}</a></p>
+                {% endfor %}
+			</div>
+			<dl>
+				<dt class="tFlex">
+                    <span>时间</span>
+                    <span>姓名</span>
+                    <span>部门</span>
+                    <span>菜名</span>
+                    <span>链接</span>
+                    <span>费用</span>
+                    <span>操作</span>
+                </dt>
+                 {% for dingcan in object_list %}
+                <dd>
+                    <span>{{ dingcan.timestamp|date:"Y-m-d" }}</span>
+                    <span>{{ dingcan.username }}</span>
+                    <span>{{ dingcan.organization }}</span>
+                    <span>{{ dingcan.food  }}</span>
+                    <span>{{ dingcan.type }}</span>
+                    <span>{{ dingcan.price }}</span>
+                    <span>
+                        <a href="{% url "dingcan_edit" dingcan.id %}">编辑</a>
+                        <a href="{% url "dingcan_delete" dingcan.id %}">删除</a>
+                    </span>
+                </dd>
+				{% endfor %}
+			</dl>
+{#			<button >开点</button>#}
+            <a class="dc_bth" href="{% url "dingcan_new" %}">开点</a>
+		</div>
+
+	</body>
+</html>

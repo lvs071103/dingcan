@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>乐蜀点餐统计</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="http://pythonic.in/static/dingcan/index.css"/>
+	<body>
+		<div class="contentAll contentAllTwo">
+			<h1>点餐喽</h1>
+                <form method="post"><ul>{% csrf_token %}
+                    {{ form.as_p }}
+            </ul>
+{#			<button >提交</button>#}
+            <input class="dc_bth" type="submit" value="提交" />
+            </form>
+		</div>
+
+	</body>
+</html>
