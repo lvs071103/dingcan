@@ -10,6 +10,7 @@ class DingCan(models.Model):
     type = models.CharField(max_length=10)
     timestamp = models.DateTimeField()
     price = models.FloatField(max_length=5)
+    ip_address = models.IPAddressField()
 
     def __unicode__(self):
         return self.username

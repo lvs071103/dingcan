@@ -9,7 +9,37 @@
 		<div class="contentAll contentAllTwo">
 			<h1>点餐喽</h1>
                 <form method="post"><ul>{% csrf_token %}
-                    {{ form.as_p }}
+{#                    {{ form.as_p }}#}
+                    <table>
+                        <tr>
+                            <td>{{ form.username.label }}</td>
+                            <td>{{form.username}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.food.label }}</td>
+                            <td>{{form.food}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.organization.label }}</td>
+                            <td>{{form.organization}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.type.label }}</td>
+                            <td>{{form.type}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.timestamp.label }}</td>
+                            <td>{{form.timestamp}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.price.label }}</td>
+                            <td>{{form.price}}</td>
+                        </tr>
+                        <tr style="display: none">
+                            <td>{{ form.ip_address.label }}</td>
+                            <td><input id="id_ip_address" name="ip_address" type="text" value="{{ ip_address }}"/></td>
+                        </tr>
+                    </table>
             </ul>
 {#			<button >提交</button>#}
             <input class="dc_bth" type="submit" value="提交" />

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>乐蜀点餐统计</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="http://pythonic.in/static/dingcan/index.css"/>
+	<body>
+		<div class="contentAll contentAllTwo">
+			<h1>点餐喽</h1>
+			<ul>
+				<li>
+                    <strong>您的大名：</strong>{{ form.username }}
+                </li>
+				<li>
+                    <strong>吃点啥：</strong>{{ form.food }}
+                </li>
+				<li>
+                    <strong>订了不来拿，怎么联系你？：</strong>{{ form.organization }}
+                </li>
+				<li>
+                    <strong>上还是下？：</strong>{{ form.type }}
+                </li>
+				<li>
+                    <strong>当前时间：</strong>{{ form.timestamp }}
+                </li>
+				<li>
+                    <strong>多少钱呢？：</strong>{{ form.price }}
+                </li>
+                <li>
+                    <strong>ip地址？：</strong>{{ ip_address }}
+                </li>
+			</ul>
+			<button class="dc_bth">提交</button>
+		</div>
+
+	</body>
+</html>
