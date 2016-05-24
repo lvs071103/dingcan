@@ -3,16 +3,57 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>乐蜀点餐统计</title>
+        <!--<script src="http://192.168.2.215:7777/template/jquery.min.js"></script>-->
+        <script src="/static/dingcan/jquery.min.js"></script>
 	</head>
-	<link rel="stylesheet" type="text/css" href="http://pythonic.in/static/dingcan/index.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/dingcan/index.css"/>
+    <script>
+        window.onload = function(){
+            var contentAllTwo = $(".contentAllTwo"),
+                    bodyBG = $(".bodyBG");
+            $("#goChoose").click(function(){
+                var _me = $(this);
+                if(_me.attr("theTime") == "False"){
+                    alert("点餐未开始！");
+                    return false;
+                }else if(_me.attr("theTime") == "Over"){
+                    alert("点餐已结束！请联系前台妹子");
+                    return false;
+                }
+
+                bodyBG.fadeIn(300);
+                contentAllTwo.animate({"top":'50%'},500);
+//                $.ajax({url:"admin_display.html",success:function(result){
+//                   console.log(result);
+//                }});
+            });
+            $("#theClose,.bodyBG").click(function(){
+                bodyBG.fadeOut(300);
+                contentAllTwo.animate({"top":'-420px'},500);
+            });
+            contentAllTwo.click(function(e){
+                e.stopPropagation()
+            });
+            $("#dc_bth").click(function(e){
+                e.stopPropagation();
+                if($("#id_type").val() == ""){
+                    alert("请选择上下!");
+                    return false;
+                }
+            })
+        }
+    </script>
 	<body>
 		<div class="contentAll">
-			<h1>乐蜀点餐统计:</h1>
+			<h1>乐蜀点餐统计:</h1><a class="dc_bth dc" theTime="{{ stop_time }}" id="goChoose" >开始点餐</a>
+			<!--<h1>乐蜀点餐统计:</h1><a class="dc_bth dc" href="{% url "dingcan_new" %}" >开始点餐</a>-->
+            <!--href="{% url "dingcan_new" %}"-->
 			<div class="diancTitle">
                 {% for item in dingcanpost %}
                     <h3>{{ item.title }}</h3>
                     <p>上：<a href="{{ item.url1 }}" target="_blank">{{ item.url1 }}</a></p>
                     <p>下：<a href="{{ item.url2 }}" target="_blank">{{ item.url2 }}</a></p>
+                    <p>点餐截止时间：{{ item.timestamp | date:"Y-m-d H:i:s" }}</p>
                 {% endfor %}
 			</div>
 			<dl>
@@ -40,9 +81,101 @@
                 </dd>
 				{% endfor %}
 			</dl>
-{#			<button >开点</button>#}
-            <a class="dc_bth" href="{% url "dingcan_new" %}">开始点餐</a>
+{#			<button>开点</button>#}
 		</div>
+       <div class="bodyBG">
+           <div class="contentAll contentAllTwo">
+               <div id="theClose">X</div>
+               <h1>点餐喽</h1>
+               <!--<form method="post">-->
+                   <!--<ul id="valList">-->
 
+                       <!--<p> <label>用户名：</label>-->
+                           <!--<input id="id_username" name="username" type="text" /></p>-->
+                       <!--<p> <label>吃点啥?：</label>-->
+                           <!--<input id="id_food" name="food" type="text" /></p>-->
+                       <!--<p> <label>部门：</label>-->
+                           <!--<input id="id_organization" name="organization" type="text" /></p>-->
+                       <!--<p> <label>上还是下：</label>-->
+                           <!--<input id="id_type" name="type" type="text" /></p>-->
+                       <!--<p> <label>当前时间：</label>-->
+                           <!--<input id="id_timestamp" name="timestamp" type="text" value="2016-05-23 17:49:34" /></p>-->
+                       <!--<p> <label>价格：</label>-->
+                           <!--<input id="id_ip_address" name="ip_address" type="text" /></p>-->
+                       <!--&lt;!&ndash;<tr style="display: none">&ndash;&gt;-->
+                       <!--&lt;!&ndash;<td>用户名：</td>&ndash;&gt;-->
+                       <!--&lt;!&ndash;<td><input id="id_ip_address" name="ip_address" type="text" value="{{ ip_address }}"/></td>&ndash;&gt;-->
+                       <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+
+                   <!--</ul>-->
+                   <!--<input class="dc_bth" id="dc_bth" value="提交" />-->
+
+
+               <form action="" method="post"><ul>{% csrf_token %}
+                   <ul>
+                       <p>
+                           <label>{{ form.username.label }}</label>
+                           <input id="id_username" name="username" type="text" />
+                       </p>
+                       <p>
+                           <label>{{ form.food.label }}</label>
+                           <input id="id_food" name="food" type="text" />
+                       </p>
+                       <p>
+                           <label>{{ form.organization.label }}</label>
+                           <input id="id_organization" name="organization" type="text" />
+                       </p>
+                       <p>
+                           <label>{{ form.type.label }}</label>
+                           <select id="id_type" name="type">
+                               <option value="">请选择</option>
+                               <option value="上">上</option>
+                               <option value="下">下</option>
+                           </select>
+                       </p>
+                       <p>
+                           <label>{{ form.timestamp.label }}</label>
+                           {{form.timestamp}}
+                       </p>
+                       <p>
+                           <label>{{ form.price.label }}</label>
+                           {{form.price}}
+                       </p>
+                       <p style="display: none">
+                           <label>{{ form.ip_address.label }}</label>
+                           <input id="id_ip_address" name="ip_address" type="text" value="{{ ip_address }}"/>
+                       </p>
+                   </ul>
+               </ul>
+                   <input id="dc_bth" class="dc_bth" type="submit" value="提交" />
+               </form>
+
+
+
+               <!--</form>type="submit" -->
+           </div>
+       </div>
+
+
+        <!--<tr><th><label for="id_username">用户名:</label></th><td><input id="id_username" name="username" type="text" /></td></tr>-->
+        <!--<tr><th><label for="id_food">吃点啥?</label></th><td><input id="id_food" name="food" type="text" /></td></tr>-->
+        <!--<tr><th><label for="id_organization">部门:</label></th><td><input id="id_organization" name="organization" type="text" /></td></tr>-->
+        <!--<tr><th><label for="id_type">上还是下?</label></th><td><input id="id_type" name="type" type="text" /></td></tr>-->
+        <!--<tr><th><label for="id_timestamp">当前时间:</label></th><td><input id="id_timestamp" name="timestamp" type="text" value="2016-05-23 17:49:34" /></td></tr>-->
+        <!--<tr><th><label for="id_price">价格:</label></th><td><input id="id_price" name="price" step="any" type="number" /></td></tr>-->
+        <!--<tr><th><label for="id_ip_address">Ip address:</label></th><td><input id="id_ip_address" name="ip_address" type="text" /></td></tr>-->
+
+
+
+    <style>
+        .bodyBG{width: 100%;height: 100%;position: fixed;z-index: 5;background-color: rgba(0,0,0,.5);top: 0;left: 0;display: none}
+        .contentAllTwo{position: fixed;top: -420px;left: 50%;margin:  -210px 0 0 -225px;z-index: 10}
+        .contentAllTwo input:focus{outline: none}
+        #theClose{position: absolute;width: 50px;height: 50px;background-color: #333;color: #fff;line-height: 50px;text-align: center;font-size: 24px;top: 0;right: 0;transition: all .3s ease}
+        #theClose:hover{cursor: pointer;background-color: rgba(220,20,60,.9);}
+        .bodyBG ul label{display: inline-block;width: 150px}
+        .bodyBG ul input,#id_type{width: 190px;height: 30px;line-height: 30px;vertical-align: middle;margin-left: 10px;border-radius: 3px}
+        .bodyBG ul p{line-height: 35px}
+    </style>
 	</body>
 </html>

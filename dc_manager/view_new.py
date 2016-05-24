@@ -21,14 +21,16 @@ def dingcan_list(request, template_name='dingcan/dingcan_list.html'):
     form = DingCanForm(request.POST or None)
     ip_address = get_client_ip(request)
     current_time = time.mktime(datetime.datetime.now().timetuple())
+    stop_time = time.mktime(DingCanPost.objects.get(timestamp__startswith=today).timestamp.timetuple())
     try:
         stop_time = time.mktime(DingCanPost.objects.get(timestamp__startswith=today).timestamp.timetuple())
     except DingCanPost.DoesNotExist:
         stop_time = None
 
     if stop_time is None:
-        data['stop_time'] = False
-    elif current_time <= stop_time:
+        return HttpResponse("点餐还未开始")
+
+    if current_time <= stop_time:
         if form.is_valid():
             username = form.cleaned_data['username']
             try:
@@ -37,13 +39,12 @@ def dingcan_list(request, template_name='dingcan/dingcan_list.html'):
                 form.save()
                 return HttpResponse("<script>alert(\"订餐成功\");window.location.assign(\"/dingcan/\")</script>")
             else:
-                return HttpResponse("<script>alert(\"你已经点过,请勿反复提交,返回可编辑删除\");"
+                return HttpResponse("<script>alert(\"你已经点过,请勿反复提交,首页可编辑删除\");"
                                     "window.location.assign(\"/dingcan/\")</script>")
         data['form'] = form
         data['ip_address'] = ip_address
-        data['stop_time'] = True
     else:
-        data['stop_time'] = 'Over'
+        return HttpResponse("点餐已结束，请联系前台妹子")
     return render(request, template_name, data)
 
 
@@ -64,9 +65,7 @@ def dingcan_create(request, template_name='dingcan/dingcan_form.html'):
     form = DingCanForm(request.POST or None)
     ip_address = get_client_ip(request)
     current_time = time.mktime(datetime.datetime.now().timetuple())
-    # print current_time
-    # stop_time = time.mktime(DingCanPost.objects.get(timestamp__startswith=today).timestamp.timetuple())
-    # print stop_time
+    stop_time = time.mktime(DingCanPost.objects.get(timestamp__startswith=today).timestamp.timetuple())
     try:
         stop_time = time.mktime(DingCanPost.objects.get(timestamp__startswith=today).timestamp.timetuple())
     except DingCanPost.DoesNotExist:
@@ -99,7 +98,7 @@ def dingcan_update(request, pk, template_name='dingcan/dingcan_form.html'):
         dingcan = get_object_or_404(DingCan, pk=pk)
         form = DingCanForm(request.POST or None, instance=dingcan)
         client_ip = get_client_ip(request)
-        db_ip = DingCan.objects.filter(id=pk).values_list('ip_address')[0][0]
+        db_ip = ip = DingCan.objects.filter(id=pk).values_list('ip_address')[0][0]
         if client_ip == db_ip:
             if form.is_valid():
                 form.save()

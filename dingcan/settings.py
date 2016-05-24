@@ -73,13 +73,15 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'PRC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# USE_TZ = True
+
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -91,5 +93,8 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates').replace('\\', '/'),
 )
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
